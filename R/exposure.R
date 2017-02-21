@@ -28,9 +28,9 @@ exposure <- function( d ) {
 
   # browser()
   d_kid <- d %>%
-    dplyr::select(client_id, referral_date, was_removed, removal_begin_date) %>%
-    dplyr::arrange(client_id, referral_date, !was_removed, removal_begin_date) %>%
-    dplyr::group_by(client_id) %>%
+    dplyr::select_("client_id", "referral_date", "was_removed", "removal_begin_date") %>%
+    dplyr::arrange_("client_id", "referral_date", "!was_removed", "removal_begin_date") %>%
+    dplyr::group_by_("client_id") %>%
     dplyr::slice(1) %>%
     dplyr::mutate(
       preremoval_duration                    = as.integer(difftime(removal_begin_date, referral_date, units="days"))
