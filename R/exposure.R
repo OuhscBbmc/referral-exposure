@@ -20,6 +20,9 @@ exposure <- function( d ) {
   for( i in seq_along(required_columns) ) {
     message_name <- sprintf("The column `%s` is not present in the tibble::tbl.", names(required_columns)[i])
     if( !(names(required_columns)[i] %in% colnames(d)) ) stop(message_name)
+
+    message_type <- sprintf("The column `%s` is data type `%s`, but should have `%s`.", names(required_columns)[i], class(d[[i]]), required_columns[i])
+    if( required_columns[i] != class(d[[i]]) ) stop(message_type)
   }
 
 

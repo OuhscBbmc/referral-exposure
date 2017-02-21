@@ -16,6 +16,8 @@ ds_plain <-
     5L,           9L,   "2014-01-01",        "2015-01-01"
   ) %>%
   dplyr::mutate(
+    client_id             = as.character(client_id),
+    referral_id           = as.character(referral_id),
     referral_date         = as.Date(referral_date),
     removal_begin_date    = as.Date(removal_begin_date)
   )

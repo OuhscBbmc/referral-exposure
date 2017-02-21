@@ -16,6 +16,8 @@ ds_plain <-
     5L,           9L,   "2014-01-01",        "2015-01-01"
   ) %>%
   dplyr::mutate(
+    client_id             = as.character(client_id),
+    referral_id           = as.character(referral_id),
     referral_date         = as.Date(referral_date),
     removal_begin_date    = as.Date(removal_begin_date)
   )
@@ -39,9 +41,22 @@ test_that("exposure - missing columns", {
     error_message <- sprintf("The column `%s` is not present in the tibble::tbl.", colnames(ds_plain)[i])
     expect_error(exposure(ds_missing_column), error_message, fixed=TRUE)
   }
+})
 
+test_that("exposure - bad column type", {
+  # For each column, create a copy of the tbl that's has a column of the incorrect data type.
 
-  # expect_error(exposure(d), "The `d` parameter must inherit from `tibble::tbl`.", fixed=TRUE)
+  ds_bad_type <- dplyr::mutate(ds_plain, client_id = as.integer(client_id))
+  expect_error(exposure(ds_bad_type), "The column `client_id` is data type `integer`, but should have `character`.", fixed=TRUE)
+
+  ds_bad_type <- dplyr::mutate(ds_plain, referral_id = as.integer(referral_id))
+  expect_error(exposure(ds_bad_type), "The column `referral_id` is data type `integer`, but should have `character`.", fixed=TRUE)
+
+  ds_bad_type <- dplyr::mutate(ds_plain, referral_date = as.character(referral_date))
+  expect_error(exposure(ds_bad_type), "The column `referral_date` is data type `character`, but should have `Date`.", fixed=TRUE)
+
+  ds_bad_type <- dplyr::mutate(ds_plain, removal_begin_date=as.character(removal_begin_date))
+  expect_error(exposure(ds_bad_type), "The column `removal_begin_date` is data type `character`, but should have `Date`.", fixed=TRUE)
 })
 
 rm(ds_plain)
