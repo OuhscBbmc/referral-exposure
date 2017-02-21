@@ -7,5 +7,6 @@
 #' @md
 #'
 exposure <- function( d ) {
+  if( !inherits(d, "tbl", which = FALSE) ) stop("The `d` parameter must inherit from `tibble::tbl`.")
   return( d )
 }
