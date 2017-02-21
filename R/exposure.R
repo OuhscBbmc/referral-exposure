@@ -22,7 +22,7 @@ exposure <- function( d ) {
     if( !(names(required_columns)[i] %in% colnames(d)) ) stop(message_name)
 
     message_type <- sprintf("The column `%s` is data type `%s`, but should have `%s`.", names(required_columns)[i], class(d[[i]]), required_columns[i])
-    if( required_columns[i] != class(d[[i]]) ) stop(message_type)
+    if( required_columns[i] != class(d[[names(required_columns[i])]]) ) stop(message_type)
   }
 
 
