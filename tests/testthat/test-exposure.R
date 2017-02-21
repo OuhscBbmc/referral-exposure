@@ -52,9 +52,11 @@ test_that("smoke-test", {
   expect_true(!is.null(d_returned))
 })
 
-test_that("scenario-test", {
+test_that("scenario-preremoval_duration", {
+  testthat::skip("In development")
   d_returned <- exposure(ds_kid_referral_input)
-  # expect_equal(d_returned, ds_kid_output)
+  expect_false(is.null(d_returned$preremoval_duration))
+  expect_equal(d_returned$preremoval_duration, ds_kid_output$preremoval_duration)
 })
 
 rm(ds_kid_referral_input)

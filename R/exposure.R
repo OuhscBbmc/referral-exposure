@@ -14,6 +14,7 @@ exposure <- function( d ) {
     client_id           = "character",
     referral_id         = "character",
     referral_date       = "Date",
+    was_removed         = "logical",
     removal_begin_date  = "Date"
   )
 
