@@ -9,11 +9,11 @@
 Much of this package has been developed to support the needs of the following projects.  We appreciate the support.
 \enumerate{
 
-  \item \emph{Title IV-E Waiver Project}, [HRSA/MCHB](http://mchb.hrsa.gov/)-sponsored collaboration with \href{http://www.okdhs.org/}{OKDHS}; David Bard, PI, OUHSC; 2014-2017.
+\item \emph{Title IV-E Waiver Project}, \href{http://mchb.hrsa.gov/}{HRSA/MCHB}-sponsored collaboration with \href{http://www.okdhs.org/}{OKDHS}; David Bard, PI, OUHSC; 2014-2017.
 
-  \item \emph{Shelter Project}, ; David Bard, PI; 2016-2017.
+\item \emph{Shelter Project}, ; David Bard, PI; 2016-2017.
 
-  \item Additional Insitutional Support from OUHSC \href{https://www.oumedicine.com/department-of-pediatrics}{Dept of Pediatrics}; 2013-2017.
+\item Additional Insitutional Support from OUHSC \href{https://www.oumedicine.com/department-of-pediatrics}{Dept of Pediatrics}; 2013-2017.
 
 }
 }
