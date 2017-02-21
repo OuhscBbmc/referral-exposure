@@ -5,7 +5,7 @@ cache: packages
 warnings_are_errors: true
 r:
   - release
-  - devel
+#  - devel
 r_github_packages:
   - jimhester/covr
 # - hadley/testthat
