@@ -40,12 +40,39 @@ exposure <- function( d, censored_date ) {
     dplyr::ungroup() %>%
     dplyr::select_("client_id", "was_removed_ever")
 
+  ds_subsequent <-
+    "SELECT
+      d1.client_id,
+      d1.referral_date,
+      d1.removal_begin_date,
+      d2.referral_date         AS referral_date_subsequent,
+      d2.removal_begin_date    AS removal_begin_date_subsequent
+    FROM d AS d1
+      LEFT JOIN d AS d2 ON
+        (d1.client_id = d2.client_id)
+        AND (d1.referral_date < d2.referral_date)
+    ORDER BY d1.client_id, d1.referral_date
+    " %>%
+    DBI::SQL() %>%
+    sqldf::sqldf() %>%
+    dplyr::select_(
+      "client_id",  "referral_date_subsequent", "removal_begin_date_subsequent"
+    ) %>%
+    dplyr::mutate(
+      referral_date_subsequent            = as.Date(referral_date_subsequent          , origin="1970-01-01"),
+      removal_begin_date_subsequent       = as.Date(removal_begin_date_subsequent     , origin="1970-01-01")
+    )
+
   d_kid <- d %>%
     dplyr::distinct_("client_id", .keep_all = FALSE) %>%
     dplyr::left_join(d_kid_premoval, by="client_id") %>%
     dplyr::left_join(d_kid_removed , by="client_id") %>%
+    # dplyr::left_join(ds_subsequent , by="client_id") %>%
     dplyr::select_(
-      "client_id",  "preremoval_duration", "preremoval_duration_censored", "was_removed_first", "was_removed_ever"
+      "client_id",
+      "preremoval_duration", "preremoval_duration_censored",
+      "was_removed_first", "was_removed_ever"
+      # "referral_date_subsequent", "removal_begin_date_subsequent"
     )
 
   return( d_kid )

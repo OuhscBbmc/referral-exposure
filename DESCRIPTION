@@ -17,9 +17,10 @@ Imports:
     dplyr,
     methods,
     magrittr,
+    readr,
+    sqldf,
     tidyr,
-    tibble,
-    readr
+    tibble
 Suggests:
     devtools,
     knitr,
