@@ -8,24 +8,19 @@
 #'
 #'
 #' Much of this package has been developed to support the needs of the following projects.  We appreciate the support.
-#' \enumerate{
-#'
-#'   \item \emph{Title IV-E Waiver Project}, [HRSA/MCHB](http://mchb.hrsa.gov/)-sponsored collaboration with \href{http://www.okdhs.org/}{OKDHS}; David Bard, PI, OUHSC; 2014-2017.
-#'
-#'   \item \emph{Shelter Project}, ; David Bard, PI; 2016-2017.
-#'
-#'   \item Additional Insitutional Support from OUHSC \href{https://www.oumedicine.com/department-of-pediatrics}{Dept of Pediatrics}; 2013-2017.
-#'
-#' }
-#'
+#' * *Title IV-E Waiver Project*, [HRSA/MCHB](http://mchb.hrsa.gov/)-sponsored collaboration with [OKDHS](http://www.okdhs.org/); David Bard, PI, OUHSC; 2014-2017.
+#' * *Shelter Project*, David Bard, PI; 2016-2017.
+#' * Additional Insitutional Support from OUHSC [Dept of Pediatrics](https://www.oumedicine.com/department-of-pediatrics); 2013-2017.
 #'
 #' @note
-#' The most recent development version is available through \href{https://github.com/OuhscBbmc/referral-exposure}{GitHub} by
+#' The most recent development version is available through [GitHub](https://github.com/OuhscBbmc/referral-exposure) by
 #' running
-#' \code{devtools::install_github} \code{('OuhscBbmc/referral-exposure')}
-#' (make sure \href{https://cran.r-project.org/package=devtools}{devtools} is already installed).
+#'
+#' `devtools::install_github('OuhscBbmc/referral-exposure')`
+#' (make sure [devtools](https://cran.r-project.org/package=devtools) is already installed).
 #' If you're having trouble with the package, please install the development version.  If this doesn't solve
-#' your problem, please create a \href{https://github.com/OuhscBbmc/referral-exposure/issues}{new issue}, or email Will.
+#' your problem, please create a [new issue](https://github.com/OuhscBbmc/referral-exposure/issues), or email Will.
+#'
 #' @examples
 #' \dontrun{
 #' # Install/update ReferralExposure with the development version from GitHub
