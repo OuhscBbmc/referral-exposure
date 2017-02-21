@@ -27,15 +27,34 @@ exposure <- function( d ) {
   }
 
   # browser()
-  d_kid <- d %>%
+  d_kid_premoval <- d %>%
     dplyr::select_("client_id", "referral_date", "was_removed", "removal_begin_date") %>%
     dplyr::arrange_("client_id", "referral_date", "!was_removed", "removal_begin_date") %>%
     dplyr::group_by_("client_id") %>%
     dplyr::slice(1) %>%
     dplyr::mutate(
-      preremoval_duration                    = as.integer(difftime(removal_begin_date, referral_date, units="days"))
+      preremoval_duration                    = as.integer(difftime(removal_begin_date, referral_date, units="days")),
+      was_removed_first                      = was_removed
     ) %>%
-    dplyr::ungroup()
+    dplyr::ungroup() %>%
+    dplyr::select_("client_id", "was_removed_first", "preremoval_duration")
+
+  d_kid_removed <- d %>%
+    dplyr::select_("client_id", "was_removed") %>%
+    dplyr::group_by_("client_id") %>%
+    dplyr::summarize(
+      was_removed_ever = any(was_removed, na.rm=TRUE)
+    ) %>%
+    dplyr::ungroup() %>%
+    dplyr::select_("client_id", "was_removed_ever")
+
+  d_kid <- d %>%
+    dplyr::distinct_("client_id", .keep_all = FALSE) %>%
+    dplyr::left_join(d_kid_premoval, by="client_id") %>%
+    dplyr::left_join(d_kid_removed , by="client_id") %>%
+    dplyr::select_(
+      "client_id",  "preremoval_duration", "was_removed_first", "was_removed_ever"
+    )
 
   return( d_kid )
 }

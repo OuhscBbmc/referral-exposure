@@ -52,12 +52,21 @@ test_that("smoke-test", {
   d_returned <- exposure(ds_kid_referral_input)
   expect_true(!is.null(d_returned))
 })
-
 test_that("scenario-preremoval_duration", {
   # testthat::skip("In development")
   d_returned <- exposure(ds_kid_referral_input)
   expect_false(is.null(d_returned$preremoval_duration))
   expect_equal(d_returned$preremoval_duration, ds_kid_output$preremoval_duration)
+})
+test_that("scenario-was_removed_first", {
+  d_returned <- exposure(ds_kid_referral_input)
+  expect_false(is.null(d_returned$was_removed_first))
+  expect_equal(d_returned$was_removed_first, ds_kid_output$was_removed_first)
+})
+test_that("scenario-was_removed_ever", {
+  d_returned <- exposure(ds_kid_referral_input)
+  expect_false(is.null(d_returned$was_removed_ever))
+  expect_equal(d_returned$was_removed_ever, ds_kid_output$was_removed_ever)
 })
 
 rm(ds_kid_referral_input)
