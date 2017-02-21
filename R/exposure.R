@@ -3,12 +3,15 @@
 #' Calculating exposure over multiple referrals
 #'
 #' @param d tibble.  See Details below. Required
+#' @param censored_date Date.  The last observed date; this value calculates the censored duration. Required
 #' @export
 #' @importFrom magrittr %>%
 #' @md
 #'
-exposure <- function( d ) {
+exposure <- function( d, censored_date ) {
   if( !inherits(d, "tbl", which = FALSE) ) stop("The `d` parameter must inherit from `tibble::tbl`.")
+  if( missing(censored_date) | is.null(censored_date) ) stop("The `censored_date` parameter must not be missing.")
+  if( class(censored_date) != "Date" ) stop("The `censored_date` parameter must be a date data type.")
 
   required_columns <- c(
     client_id           = "character",
@@ -33,8 +36,8 @@ exposure <- function( d ) {
     dplyr::group_by_("client_id") %>%
     dplyr::slice(1) %>%
     dplyr::mutate(
-      preremoval_duration                    = as.integer(difftime(removal_begin_date, referral_date, units="days")),
-      was_removed_first                      = was_removed
+      preremoval_duration                     = as.integer(difftime(removal_begin_date, referral_date, units="days")),
+      was_removed_first                       = was_removed
     ) %>%
     dplyr::ungroup() %>%
     dplyr::select_("client_id", "was_removed_first", "preremoval_duration")
