@@ -4,10 +4,12 @@
 \alias{exposure}
 \title{The main function of the package.}
 \usage{
-exposure(d)
+exposure(d, censored_date)
 }
 \arguments{
 \item{d}{tibble.  See Details below. Required}
+
+\item{censored_date}{Date.  The last observed date; this value calculates the censored duration. Required}
 }
 \description{
 Calculating exposure over multiple referrals

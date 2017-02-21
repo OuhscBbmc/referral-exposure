@@ -32,10 +32,10 @@ ds_kid_output <-
   tibble::tribble(
     ~client_id,  ~preremoval_duration, ~preremoval_duration_censored, ~was_removed_first, ~was_removed_ever,
             1L,                   31L,                           31L,               TRUE,              TRUE,
-            2L,           NA_integer_,                           31L,              FALSE,              TRUE,
+            2L,           NA_integer_,                          730L,              FALSE,              TRUE,
             3L,           NA_integer_,                          730L,              FALSE,             FALSE,
             4L,           NA_integer_,                          365L,              FALSE,             FALSE,
-            5L,                   92L,                           63L,               TRUE,              TRUE
+            5L,                   92L,                           92L,               TRUE,              TRUE
   ) %>%  dplyr::mutate(
     client_id             = as.character(client_id)
   )
@@ -49,15 +49,30 @@ ds_kid_referral_input <- ds_kid_referral_input %>%
   )
 
 test_that("smoke-test", {
-  d_returned <- exposure(ds_kid_referral_input)
+  d_returned <- exposure(ds_kid_referral_input, censored_date)
   expect_true(!is.null(d_returned))
 })
-
 test_that("scenario-preremoval_duration", {
   # testthat::skip("In development")
-  d_returned <- exposure(ds_kid_referral_input)
+  d_returned <- exposure(ds_kid_referral_input, censored_date)
   expect_false(is.null(d_returned$preremoval_duration))
   expect_equal(d_returned$preremoval_duration, ds_kid_output$preremoval_duration)
+})
+test_that("scenario-preremoval_duration_censored", {
+  # testthat::skip("In development")
+  d_returned <- exposure(ds_kid_referral_input, censored_date)
+  expect_false(is.null(d_returned$preremoval_duration_censored))
+  expect_equal(d_returned$preremoval_duration_censored, ds_kid_output$preremoval_duration_censored)
+})
+test_that("scenario-was_removed_first", {
+  d_returned <- exposure(ds_kid_referral_input, censored_date)
+  expect_false(is.null(d_returned$was_removed_first))
+  expect_equal(d_returned$was_removed_first, ds_kid_output$was_removed_first)
+})
+test_that("scenario-was_removed_ever", {
+  d_returned <- exposure(ds_kid_referral_input, censored_date)
+  expect_false(is.null(d_returned$was_removed_ever))
+  expect_equal(d_returned$was_removed_ever, ds_kid_output$was_removed_ever)
 })
 
 rm(ds_kid_referral_input)
