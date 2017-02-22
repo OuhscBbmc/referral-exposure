@@ -14,8 +14,8 @@ exposure <- function( d, censored_date ) {
 
   # browser()
   d_kid_premoval <- d %>%
-    dplyr::select_("client_id", "referral_date", "was_removed", "removal_begin_date") %>%
-    dplyr::arrange_("client_id", "referral_date", "!was_removed", "removal_begin_date") %>%
+    dplyr::select_("client_id", "referral_date", "was_removed", "was_returned", "removal_begin_date") %>%
+    dplyr::arrange_("client_id", "referral_date", "!was_removed", "!was_returned", "removal_begin_date") %>%
     dplyr::group_by_("client_id") %>%
     dplyr::slice(1) %>%
     dplyr::mutate(
@@ -27,19 +27,21 @@ exposure <- function( d, censored_date ) {
         as.integer(difftime(censored_date, referral_date, units="days"))
       ),
 
-      was_removed_first                       = was_removed
+      was_removed_first                       = was_removed,
+      was_returned_first                      = was_returned
     ) %>%
     dplyr::ungroup() %>%
-    dplyr::select_("client_id", "was_removed_first", "preremoval_duration", "preremoval_duration_censored")
+    dplyr::select_("client_id", "was_removed_first", "was_returned_first", "preremoval_duration", "preremoval_duration_censored")
 
   d_kid_removed <- d %>%
-    dplyr::select_("client_id", "was_removed") %>%
+    dplyr::select_("client_id", "was_removed", "was_returned") %>%
     dplyr::group_by_("client_id") %>%
     dplyr::summarize(
-      was_removed_ever = any(was_removed, na.rm=TRUE)
+      was_removed_ever        = any(was_removed, na.rm=TRUE),
+      was_returned_ever       = any(was_returned, na.rm=TRUE)
     ) %>%
     dplyr::ungroup() %>%
-    dplyr::select_("client_id", "was_removed_ever")
+    dplyr::select_("client_id", "was_removed_ever", "was_returned_ever")
 
   ds_subsequent <-
     "SELECT
@@ -83,6 +85,7 @@ exposure <- function( d, censored_date ) {
       "client_id",
       "preremoval_duration", "preremoval_duration_censored",
       "was_removed_first", "was_removed_ever",
+      "was_returned_first", "was_returned_ever",
       "had_subsequent_referral", "had_subsequent_removal"
       # "referral_date_subsequent", "removal_begin_date_subsequent"
     )
