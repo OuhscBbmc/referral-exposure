@@ -30,12 +30,12 @@ ds_kid_referral_input <-
 
 ds_kid_output <-
   tibble::tribble(
-    ~client_id,  ~preremoval_duration, ~preremoval_duration_censored, ~was_removed_first, ~was_removed_ever,
-            1L,                   31L,                           31L,               TRUE,              TRUE,
-            2L,           NA_integer_,                          730L,              FALSE,              TRUE,
-            3L,           NA_integer_,                          730L,              FALSE,             FALSE,
-            4L,           NA_integer_,                          365L,              FALSE,             FALSE,
-            5L,                   92L,                           92L,               TRUE,              TRUE
+    ~client_id,  ~preremoval_duration, ~preremoval_duration_censored, ~was_removed_first, ~was_removed_ever, ~had_subsequent_referral, ~had_subsequent_removal,
+            1L,                   31L,                           31L,               TRUE,              TRUE,                     TRUE,                    TRUE,
+            2L,           NA_integer_,                          730L,              FALSE,              TRUE,                     TRUE,                    TRUE,
+            3L,           NA_integer_,                          730L,              FALSE,             FALSE,                     TRUE,                   FALSE,
+            4L,           NA_integer_,                          365L,              FALSE,             FALSE,                    FALSE,                   FALSE,
+            5L,                   92L,                           92L,               TRUE,              TRUE,                    FALSE,                   FALSE
   ) %>%  dplyr::mutate(
     client_id             = as.character(client_id)
   )
@@ -73,6 +73,16 @@ test_that("scenario-was_removed_ever", {
   d_returned <- exposure(ds_kid_referral_input, censored_date)
   expect_false(is.null(d_returned$was_removed_ever))
   expect_equal(d_returned$was_removed_ever, ds_kid_output$was_removed_ever)
+})
+test_that("scenario-had_subsequent_referral", {
+  d_returned <- exposure(ds_kid_referral_input, censored_date)
+  expect_false(is.null(d_returned$had_subsequent_referral))
+  expect_equal(d_returned$had_subsequent_referral, ds_kid_output$had_subsequent_referral)
+})
+test_that("scenario-had_subsequent_removal", {
+  d_returned <- exposure(ds_kid_referral_input, censored_date)
+  expect_false(is.null(d_returned$had_subsequent_removal))
+  expect_equal(d_returned$had_subsequent_removal, ds_kid_output$had_subsequent_removal)
 })
 
 rm(ds_kid_referral_input)

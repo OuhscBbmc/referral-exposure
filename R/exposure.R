@@ -60,19 +60,30 @@ exposure <- function( d, censored_date ) {
       "client_id",  "referral_date_subsequent", "removal_begin_date_subsequent"
     ) %>%
     dplyr::mutate(
+      had_subsequent_referral             = !is.na(referral_date_subsequent),        # Research Q7: Reduce CPS Reports #78
+      had_subsequent_removal              = !is.na(removal_begin_date_subsequent),   # Research Q8: Reduce re-entries #79
+
       referral_date_subsequent            = as.Date(referral_date_subsequent          , origin="1970-01-01"),
       removal_begin_date_subsequent       = as.Date(removal_begin_date_subsequent     , origin="1970-01-01")
-    )
+    ) %>%
+    dplyr::group_by_("client_id") %>%
+    dplyr::summarize(
+      had_subsequent_referral             = any(had_subsequent_referral),
+      had_subsequent_removal              = any(had_subsequent_removal)
+    ) %>%
+    dplyr::ungroup() %>%
+    dplyr::select_("client_id", "had_subsequent_referral", "had_subsequent_removal")
 
   d_kid <- d %>%
     dplyr::distinct_("client_id", .keep_all = FALSE) %>%
     dplyr::left_join(d_kid_premoval, by="client_id") %>%
     dplyr::left_join(d_kid_removed , by="client_id") %>%
-    # dplyr::left_join(ds_subsequent , by="client_id") %>%
+    dplyr::left_join(ds_subsequent , by="client_id") %>%
     dplyr::select_(
       "client_id",
       "preremoval_duration", "preremoval_duration_censored",
-      "was_removed_first", "was_removed_ever"
+      "was_removed_first", "was_removed_ever",
+      "had_subsequent_referral", "had_subsequent_removal"
       # "referral_date_subsequent", "removal_begin_date_subsequent"
     )
 
