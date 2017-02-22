@@ -12,11 +12,12 @@ failing_1 <- function(  ) {
     stringsAsFactors = FALSE
   )
 
-  # ds_1b <- dplyr::mutate_if(
-  #   ds_1a,
-  #   is.character,
-  #   function(x) dplyr::coalesce(x, "-") #Replace NAs with blanks
-  # )
+  ds_1b <- dplyr::mutate_if(
+    ds_1a,
+    is.character,
+    function(x) dplyr::coalesce(x, "-") #Replace NAs with blanks
+  )
 
-  return( ds_1a )
+  return( ds_1b )
 }
+
