@@ -6,6 +6,7 @@
 #' @param censored_date Date.  The last observed date; this value calculates the censored duration. Required
 #' @export
 #' @importFrom magrittr %>%
+#' @importFrom DBI SQL
 #' @md
 #'
 exposure <- function( d, censored_date ) {

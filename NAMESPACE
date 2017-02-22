@@ -2,4 +2,5 @@
 
 export(exposure)
 export(exposure_parameter_check)
+importFrom(DBI,SQL)
 importFrom(magrittr,"%>%")
