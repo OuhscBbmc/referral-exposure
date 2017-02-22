@@ -33,15 +33,24 @@ exposure <- function( d, censored_date ) {
     dplyr::ungroup() %>%
     dplyr::select_("client_id", "was_removed_first", "was_returned_first", "preremoval_duration", "preremoval_duration_censored")
 
-  d_kid_removed <- d %>%
-    dplyr::select_("client_id", "was_removed", "was_returned") %>%
+  d_kid_summarized <- d %>%
+    dplyr::select_(
+      "client_id", "was_removed", "was_returned",
+      "referral_date", "removal_begin_date", "removal_end_date"
+    ) %>%
     dplyr::group_by_("client_id") %>%
     dplyr::summarize(
+      unique_referral_count   = dplyr::n_distinct(referral_date          , na.rm=TRUE),
+      unique_removal_count    = dplyr::n_distinct(removal_begin_date     , na.rm=TRUE),
+      unique_returned_count   = dplyr::n_distinct(removal_end_date       , na.rm=TRUE),
       was_removed_ever        = any(was_removed, na.rm=TRUE),
       was_returned_ever       = any(was_returned, na.rm=TRUE)
     ) %>%
     dplyr::ungroup() %>%
-    dplyr::select_("client_id", "was_removed_ever", "was_returned_ever")
+    dplyr::select_(
+      "client_id", "was_removed_ever", "was_returned_ever",
+      "unique_referral_count", "unique_removal_count", "unique_returned_count"
+    )
 
   ds_subsequent <-
     "SELECT
@@ -79,11 +88,12 @@ exposure <- function( d, censored_date ) {
   d_kid <- d %>%
     dplyr::distinct_("client_id", .keep_all = FALSE) %>%
     dplyr::left_join(d_kid_premoval, by="client_id") %>%
-    dplyr::left_join(d_kid_removed , by="client_id") %>%
+    dplyr::left_join(d_kid_summarized , by="client_id") %>%
     dplyr::left_join(ds_subsequent , by="client_id") %>%
     dplyr::select_(
       "client_id",
       "preremoval_duration", "preremoval_duration_censored",
+      "unique_referral_count", "unique_removal_count", "unique_returned_count",
       "was_removed_first", "was_removed_ever",
       "was_returned_first", "was_returned_ever",
       "had_subsequent_referral", "had_subsequent_removal"

@@ -47,6 +47,17 @@ ds_kid_output <-
               5L,                    FALSE,                   FALSE
     ),
     by = "client_id"
+  ) %>%
+  dplyr::left_join(
+    tibble::tribble(
+      ~client_id, ~unique_referral_count, ~unique_removal_count, ~unique_returned_count,
+              1L,                      3,                     2,                      2,
+              2L,                      3,                     2,                      1,
+              3L,                      2,                     0,                      0,
+              4L,                      1,                     0,                      0,
+              5L,                      1,                     1,                      1
+    ),
+    by = "client_id"
   ) %>%  dplyr::mutate(
     client_id             = as.character(client_id)
   )
@@ -76,6 +87,7 @@ test_that("scenario-preremoval_duration", {
 test_that("scenario-preremoval_duration_censored", {
   check_column("preremoval_duration_censored")
 })
+
 test_that("scenario-was_removed_first", {
   check_column("was_removed_first")
 })
@@ -88,11 +100,22 @@ test_that("scenario-was_returned_first", {
 test_that("scenario-was_returned_ever", {
   check_column("was_returned_ever")
 })
+
 test_that("scenario-had_subsequent_referral", {
   check_column("had_subsequent_referral")
 })
 test_that("scenario-had_subsequent_removal", {
   check_column("had_subsequent_removal")
+})
+
+test_that("scenario-unique_referral_count", {
+  check_column("unique_referral_count")
+})
+test_that("scenario-unique_removal_count", {
+  check_column("unique_removal_count")
+})
+test_that("scenario-unique_returned_count", {
+  check_column("unique_returned_count")
 })
 
 rm(ds_kid_referral_input)
