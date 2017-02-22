@@ -47,6 +47,12 @@ ds_kid_referral_input <- ds_kid_referral_input %>%
     referral_date         = as.Date(referral_date),
     removal_begin_date    = as.Date(removal_begin_date)
   )
+check_column <- function( variable_name ) {
+  d_returned <- exposure(ds_kid_referral_input, censored_date)
+  expect_false(is.null(d_returned[[variable_name]]))
+  # browser()
+  expect_equal(d_returned[[variable_name]], ds_kid_output[[variable_name]])
+}
 
 test_that("smoke-test", {
   d_returned <- exposure(ds_kid_referral_input, censored_date)
@@ -54,35 +60,22 @@ test_that("smoke-test", {
 })
 test_that("scenario-preremoval_duration", {
   # testthat::skip("In development")
-  d_returned <- exposure(ds_kid_referral_input, censored_date)
-  expect_false(is.null(d_returned$preremoval_duration))
-  expect_equal(d_returned$preremoval_duration, ds_kid_output$preremoval_duration)
+  check_column("preremoval_duration")
 })
 test_that("scenario-preremoval_duration_censored", {
-  # testthat::skip("In development")
-  d_returned <- exposure(ds_kid_referral_input, censored_date)
-  expect_false(is.null(d_returned$preremoval_duration_censored))
-  expect_equal(d_returned$preremoval_duration_censored, ds_kid_output$preremoval_duration_censored)
+  check_column("preremoval_duration_censored")
 })
 test_that("scenario-was_removed_first", {
-  d_returned <- exposure(ds_kid_referral_input, censored_date)
-  expect_false(is.null(d_returned$was_removed_first))
-  expect_equal(d_returned$was_removed_first, ds_kid_output$was_removed_first)
+  check_column("was_removed_first")
 })
 test_that("scenario-was_removed_ever", {
-  d_returned <- exposure(ds_kid_referral_input, censored_date)
-  expect_false(is.null(d_returned$was_removed_ever))
-  expect_equal(d_returned$was_removed_ever, ds_kid_output$was_removed_ever)
+  check_column("was_removed_ever")
 })
 test_that("scenario-had_subsequent_referral", {
-  d_returned <- exposure(ds_kid_referral_input, censored_date)
-  expect_false(is.null(d_returned$had_subsequent_referral))
-  expect_equal(d_returned$had_subsequent_referral, ds_kid_output$had_subsequent_referral)
+  check_column("had_subsequent_referral")
 })
 test_that("scenario-had_subsequent_removal", {
-  d_returned <- exposure(ds_kid_referral_input, censored_date)
-  expect_false(is.null(d_returned$had_subsequent_removal))
-  expect_equal(d_returned$had_subsequent_removal, ds_kid_output$had_subsequent_removal)
+  check_column("had_subsequent_removal")
 })
 
 rm(ds_kid_referral_input)
