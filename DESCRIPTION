@@ -14,12 +14,14 @@ Depends:
     R(>= 3.0.0),
     stats
 Imports:
+    DBI,
     dplyr,
     methods,
     magrittr,
+    readr,
+    sqldf,
     tidyr,
-    tibble,
-    readr
+    tibble
 Suggests:
     devtools,
     knitr,
