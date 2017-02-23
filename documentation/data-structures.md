@@ -1,6 +1,5 @@
 ---
 title: "Possible Data Structures"
-date: "Date: `r Sys.Date()`"
 output:
   html_document:
     keep_md: yes
@@ -8,9 +7,6 @@ output:
     toc_depth: 5
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
 ### Current Structure
 
@@ -77,3 +73,12 @@ knitr::opts_chunk$set(echo = TRUE)
     * Could this structure be useful to other states or CPS agencies?  Could reduce the community's overall development costs, and help our analyses be more comparable.
 * Cons for analysis
     * It's more work to develop (but maybe not, if the corner-cases are too hard with our existing approach)
+    
+### References
+
+1. Therneau, Crowson, & Atkinson (2016).  `survival` package vignette: "Multi-state models and competing risks" https://cran.r-project.org/web/packages/survival/vignettes/compete.pdf
+1. "Multistate Models" section of the "Survival Analysis" CRAN Task View: https://cran.r-project.org/web/views/Survival.html
+1. Putter, Fiocco, & Geskus (2007). "Tutorial in biostatistics: Competing risks and multi-state models" *Statistics in Medicine*.
+`S:/BBMC/literature/dhs/survival/putter-fiocco-geskus-2007-competing-risks-and-multistate-models.pdf`
+1. Yung, & Liu (2007). "A joint frailty model for survival and gap times between recurrent events." *Biometrics*. https://www.ncbi.nlm.nih.gov/pubmed/17688491
+1. Zhao, Zhou (2012). "Modeling gap times between recurrent events by marginal rate function." *Computation Statistics & Data Analysis*. http://www.sciencedirect.com/science/article/pii/S0167947311002829
