@@ -4,7 +4,8 @@ Description: Reusable functions for calculating exposure during repeated spans.
 Version: 0.0.1.9000
 Date: 2017-02-21
 Authors@R: c(person("Will", "Beasley", role = c("aut", "cre"), email =
-    "wibeasley@hotmail.com"), person("David", "Bard", role = "ctb"))
+    "wibeasley@hotmail.com", comment = c(ORCID = "0000-0002-5613-5006")), 
+    person("David", "Bard", role = "ctb"))
 Author: Will Beasley [aut, cre],
     David Bard [ctb]
 Maintainer: Will Beasley <wibeasley@hotmail.com>
